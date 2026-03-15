@@ -258,12 +258,12 @@
     <span class="conf-num" id="successNum"></span>
   </div>
   <br>
-  <span style="font-size:0.82rem;opacity:0.8;">📧 Courriel envoyé à Cremeetcie@formationlangevin.com<br>Conserve ce numéro pour tes dossiers.</span>
+  <span style="font-size:0.82rem;opacity:0.8;">📧 Courriel envoyé à <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="9bd8e9fef6fefeeff8f2fedbfdf4e9f6faeff2f4f5f7faf5fcfeedf2f5b5f8f4f6">[email&#160;protected]</a><br>Conserve ce numéro pour tes dossiers.</span>
 </div>
 
-<script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
   // ── EmailJS init ──────────────────────────────────────────────────────
-  emailjs.init('WR1opVRrDGJ2lQxn-');
+  emailjs.init({ publicKey: 'WR1opVRrDGJ2lQxn-' });
 
   // ── Helpers ───────────────────────────────────────────────────────────
   function pad(n, w) { return String(n).padStart(w, '0'); }
@@ -358,10 +358,4 @@
     emailjs.send('service_0dmie2i', 'template_d32rmw7', params)
       .then(function() {
         document.getElementById('successNum').textContent = confNum;
-        const banner = document.getElementById('successBanner');
-        banner.style.display = 'block';
-        banner.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        btn.textContent = '✅ Envoyé !';
-        btn.style.background = '#2e7d52';
-      })
-      
+        const banner = document.ge
