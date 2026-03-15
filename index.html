@@ -3,68 +3,33 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Bordereau de Dépôt — Crème et Cie</title>
+<title>Bordereau de Depot - Creme et Cie</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 <style>
   :root {
-    --cream: #faf6f0;
-    --dark: #1a1410;
-    --brown: #6b4c35;
-    --gold: #c9a84c;
-    --soft: #ede6da;
-    --border: #c5b49a;
-    --red: #c0392b;
-    --green: #2e7d52;
+    --cream: #faf6f0; --dark: #1a1410; --brown: #6b4c35; --gold: #c9a84c;
+    --soft: #ede6da; --border: #c5b49a; --red: #c0392b; --green: #2e7d52;
     --shadow: 0 4px 24px rgba(107,76,53,0.10);
   }
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-  body {
-    font-family: 'DM Sans', sans-serif;
-    background: var(--cream);
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 40px 16px 60px;
-    color: var(--dark);
-  }
+  body { font-family: 'DM Sans', sans-serif; background: var(--cream); min-height: 100vh; display: flex; flex-direction: column; align-items: center; padding: 40px 16px 60px; color: var(--dark); }
   .page-header { text-align: center; margin-bottom: 32px; animation: fadeDown 0.6s ease both; }
   .page-header .logo-name { font-family: 'Playfair Display', serif; font-size: 2rem; color: var(--brown); letter-spacing: 0.04em; }
   .page-header .tagline { font-size: 0.82rem; color: var(--gold); letter-spacing: 0.18em; text-transform: uppercase; margin-top: 4px; }
-  .card {
-    background: #fff; border-radius: 18px; box-shadow: var(--shadow);
-    width: 100%; max-width: 620px; padding: 36px 36px 28px;
-    animation: fadeUp 0.6s ease both 0.1s; border: 1.5px solid var(--soft);
-  }
-  .card-title {
-    font-family: 'Playfair Display', serif; font-size: 1.35rem; color: var(--brown);
-    text-align: center; margin-bottom: 28px; padding-bottom: 16px; border-bottom: 1.5px solid var(--soft);
-  }
+  .card { background: #fff; border-radius: 18px; box-shadow: var(--shadow); width: 100%; max-width: 620px; padding: 36px 36px 28px; animation: fadeUp 0.6s ease both 0.1s; border: 1.5px solid var(--soft); }
+  .card-title { font-family: 'Playfair Display', serif; font-size: 1.35rem; color: var(--brown); text-align: center; margin-bottom: 28px; padding-bottom: 16px; border-bottom: 1.5px solid var(--soft); }
   .row { display: flex; gap: 14px; margin-bottom: 16px; }
   .field { flex: 1; display: flex; flex-direction: column; gap: 5px; }
   .field.full { flex: none; width: 100%; }
   label { font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.12em; color: var(--brown); font-weight: 500; }
-  input[type="text"], input[type="date"], input[type="time"], input[type="number"], textarea {
-    border: 1.5px solid var(--border); border-radius: 8px; padding: 9px 12px;
-    font-family: 'DM Sans', sans-serif; font-size: 0.95rem; color: var(--dark);
-    background: var(--cream); outline: none;
-    transition: border-color 0.2s, box-shadow 0.2s; width: 100%;
-  }
+  input[type="text"], input[type="date"], input[type="time"], input[type="number"], textarea { border: 1.5px solid var(--border); border-radius: 8px; padding: 9px 12px; font-family: 'DM Sans', sans-serif; font-size: 0.95rem; color: var(--dark); background: var(--cream); outline: none; transition: border-color 0.2s, box-shadow 0.2s; width: 100%; }
   input:focus, textarea:focus { border-color: var(--gold); box-shadow: 0 0 0 3px rgba(201,168,76,0.13); background: #fff; }
   textarea { resize: vertical; min-height: 68px; }
-  .section-title {
-    font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.14em;
-    color: var(--brown); font-weight: 500; margin-bottom: 8px; margin-top: 20px;
-    display: flex; align-items: center; gap: 8px;
-  }
+  .section-title { font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.14em; color: var(--brown); font-weight: 500; margin-bottom: 8px; margin-top: 20px; display: flex; align-items: center; gap: 8px; }
   .section-title::after { content: ''; flex: 1; height: 1px; background: var(--border); }
   .depot-table { width: 100%; border-collapse: collapse; margin-bottom: 6px; font-size: 0.9rem; }
-  .depot-table th {
-    background: var(--soft); padding: 9px 12px; font-weight: 500;
-    font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.10em;
-    color: var(--brown); border: 1.5px solid var(--border); text-align: center;
-  }
+  .depot-table th { background: var(--soft); padding: 9px 12px; font-weight: 500; font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.10em; color: var(--brown); border: 1.5px solid var(--border); text-align: center; }
   .depot-table td { border: 1.5px solid var(--border); padding: 7px 10px; vertical-align: middle; }
   .depot-table .row-label { background: var(--cream); font-weight: 500; color: var(--dark); white-space: nowrap; font-size: 0.88rem; }
   .depot-table input[type="number"] { border: none; background: transparent; padding: 4px 6px; font-size: 0.95rem; text-align: right; border-radius: 4px; width: 100%; }
@@ -74,26 +39,12 @@
   .net3-row { display: flex; align-items: center; gap: 10px; margin-bottom: 16px; }
   .net3-row label { font-family: 'Playfair Display', serif; font-size: 1rem; text-transform: none; letter-spacing: 0; color: var(--dark); font-weight: 500; white-space: nowrap; }
   .net3-row input { flex: 1; }
-  .caisse-reminder {
-    background: #fff8ed; border: 1.5px solid var(--gold); border-radius: 10px;
-    padding: 11px 16px; font-size: 0.88rem; color: var(--brown);
-    margin-top: 18px; margin-bottom: 8px; display: flex; align-items: center; gap: 10px;
-  }
+  .caisse-reminder { background: #fff8ed; border: 1.5px solid var(--gold); border-radius: 10px; padding: 11px 16px; font-size: 0.88rem; color: var(--brown); margin-top: 18px; margin-bottom: 8px; display: flex; align-items: center; gap: 10px; }
   .submit-area { margin-top: 28px; display: flex; flex-direction: column; gap: 10px; align-items: center; }
-  .btn-submit {
-    background: var(--brown); color: #fff; border: none; border-radius: 50px;
-    padding: 14px 48px; font-family: 'DM Sans', sans-serif; font-size: 1rem;
-    font-weight: 500; letter-spacing: 0.06em; cursor: pointer;
-    transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
-    box-shadow: 0 4px 16px rgba(107,76,53,0.18);
-  }
+  .btn-submit { background: var(--brown); color: #fff; border: none; border-radius: 50px; padding: 14px 48px; font-family: 'DM Sans', sans-serif; font-size: 1rem; font-weight: 500; letter-spacing: 0.06em; cursor: pointer; transition: background 0.2s, transform 0.15s, box-shadow 0.2s; box-shadow: 0 4px 16px rgba(107,76,53,0.18); }
   .btn-submit:hover:not(:disabled) { background: var(--gold); color: var(--dark); transform: translateY(-1px); }
   .btn-submit:disabled { opacity: 0.7; cursor: not-allowed; }
-  .success-banner {
-    display: none; background: #edf7f1; border: 1.5px solid var(--green);
-    color: var(--green); border-radius: 12px; padding: 24px; text-align: center;
-    margin-top: 20px; width: 100%; max-width: 620px; animation: fadeUp 0.4s ease both;
-  }
+  .success-banner { display: none; background: #edf7f1; border: 1.5px solid var(--green); color: var(--green); border-radius: 12px; padding: 24px; text-align: center; margin-top: 20px; width: 100%; max-width: 620px; animation: fadeUp 0.4s ease both; }
   .success-banner strong { display: block; font-size: 1.1rem; margin-bottom: 10px; font-family: 'Playfair Display', serif; }
   .conf-box { background: #fff; border-radius: 8px; padding: 12px 20px; display: inline-block; border: 1.5px solid var(--green); margin-bottom: 10px; }
   .conf-label { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.12em; color: var(--green); font-weight: 500; display: block; }
@@ -106,25 +57,20 @@
 </style>
 </head>
 <body>
-
 <div class="page-header">
-  <div class="logo-name">Crème &amp; Cie</div>
-  <div class="tagline">Bordereau de Dépôt</div>
+  <div class="logo-name">Creme &amp; Cie</div>
+  <div class="tagline">Bordereau de Depot</div>
 </div>
-
 <div class="card">
-  <div class="card-title">Bordereau de Dépôt</div>
-
+  <div class="card-title">Bordereau de Depot</div>
   <form id="depotForm" novalidate>
-
     <div class="row">
       <div class="field full">
-        <label for="employe">Employé</label>
-        <input type="text" id="employe" placeholder="Nom de l'employé" required>
+        <label for="employe">Employe</label>
+        <input type="text" id="employe" placeholder="Nom de l'employe" required>
         <span class="field-error" id="err-employe">Ce champ est requis.</span>
       </div>
     </div>
-
     <div class="row">
       <div class="field">
         <label for="jour">Jour de la semaine</label>
@@ -137,23 +83,21 @@
         <span class="field-error" id="err-date">Ce champ est requis.</span>
       </div>
     </div>
-
     <div class="row">
       <div class="field">
-        <label for="quart-de">Quart de travail — De</label>
+        <label for="quart-de">Quart de travail - De</label>
         <input type="time" id="quart-de" required>
         <span class="field-error" id="err-quart-de">Ce champ est requis.</span>
       </div>
       <div class="field">
-        <label for="quart-a">À</label>
+        <label for="quart-a">A</label>
         <input type="time" id="quart-a" required>
         <span class="field-error" id="err-quart-a">Ce champ est requis.</span>
       </div>
     </div>
-
     <div class="row">
       <div class="field">
-        <label for="caisse-depart">Caisse de départ ($)</label>
+        <label for="caisse-depart">Caisse de depart ($)</label>
         <input type="number" id="caisse-depart" placeholder="135.00" step="0.01" min="0">
       </div>
       <div class="field">
@@ -161,26 +105,23 @@
         <input type="text" id="no-caisse" placeholder="ex. 01">
       </div>
     </div>
-
     <div class="row">
       <div class="field full">
-        <label for="meteo">Météo / 1er ou dernier client / Particularités</label>
+        <label for="meteo">Meteo / 1er ou dernier client / Particularites</label>
         <input type="text" id="meteo" placeholder="ex. Neige, premier client 9h15...">
       </div>
     </div>
-
     <div class="net3-row">
       <label for="net3">NET 3 :</label>
       <input type="number" id="net3" placeholder="0.00" step="0.01" min="0">
     </div>
-
     <div class="section-title">Argent</div>
     <table class="depot-table">
       <thead>
         <tr>
           <th style="width:38%"></th>
-          <th>Montant dû<br><small style="font-weight:400;text-transform:none;">(relevé de caisse)</small></th>
-          <th>Montant réel déposé</th>
+          <th>Montant du (releve de caisse)</th>
+          <th>Montant reel depose</th>
         </tr>
       </thead>
       <tbody>
@@ -190,9 +131,9 @@
           <td><input type="number" id="argent-reel" placeholder="0.00" step="0.01" min="0"></td>
         </tr>
         <tr>
-          <td class="row-label">Moins tip débit</td>
+          <td class="row-label">Moins tip debit</td>
           <td><input type="number" id="tip-debit" placeholder="0.00" step="0.01" min="0" oninput="calcTotals()"></td>
-          <td class="hint">* Les chiffres dans ces 2 cases doivent être identiques (ou presque)</td>
+          <td class="hint">* Les chiffres dans ces 2 cases doivent etre identiques (ou presque)</td>
         </tr>
         <tr class="total-row">
           <td class="row-label">Total</td>
@@ -201,88 +142,77 @@
         </tr>
       </tbody>
     </table>
-
-    <div class="section-title">Débit</div>
+    <div class="section-title">Debit</div>
     <table class="depot-table">
       <thead>
         <tr>
           <th style="width:38%"></th>
-          <th>Montant dû</th>
-          <th>Montant réel déposé</th>
+          <th>Montant du</th>
+          <th>Montant reel depose</th>
         </tr>
       </thead>
       <tbody>
         <tr>
-          <td class="row-label"><strong>DÉBIT</strong><br><small style="font-weight:400;font-size:0.78rem;color:#888">(AVANT tip)</small></td>
+          <td class="row-label"><strong>DEBIT</strong><br><small style="font-weight:400;font-size:0.78rem;color:#888">(AVANT tip)</small></td>
           <td><input type="number" id="debit-du" placeholder="0.00" step="0.01" min="0"></td>
           <td>
             <input type="number" id="debit-reel" placeholder="0.00" step="0.01" min="0">
-            <div class="hint">Additionner les papiers débit AVANT tip — les chiffres doivent être identiques</div>
+            <div class="hint">Additionner les papiers debit AVANT tip - les chiffres doivent etre identiques</div>
           </td>
         </tr>
       </tbody>
     </table>
-
-    <div class="bottom-section">
+    <div style="margin-top:18px;">
       <div class="section-title">Explications</div>
       <textarea id="explications" placeholder="Toute note ou explication utile..."></textarea>
     </div>
-
     <div class="caisse-reminder">
-      <span style="font-size:1.2rem">💡</span>
-      <span>Toujours laisser la caisse à <strong>135 $</strong> à la fin de votre quart de travail.</span>
+      <span style="font-size:1.2rem">&#128161;</span>
+      <span>Toujours laisser la caisse a <strong>135 $</strong> a la fin de votre quart de travail.</span>
     </div>
-
     <div class="row" style="margin-top:14px;">
       <div class="field">
         <label for="pourboires">Total de tes pourboires ($)</label>
         <input type="number" id="pourboires" placeholder="0.00" step="0.01" min="0">
       </div>
       <div class="field">
-        <label for="conso">Consommation employé</label>
+        <label for="conso">Consommation employe</label>
         <input type="text" id="conso" placeholder="(avec facture si requise)">
       </div>
     </div>
-
     <div class="submit-area">
-      <button type="submit" class="btn-submit" id="btnSubmit">📨 Envoyer le dépôt par courriel</button>
+      <button type="submit" class="btn-submit" id="btnSubmit">Envoyer le depot par courriel</button>
     </div>
-
   </form>
 </div>
-
 <div class="success-banner" id="successBanner">
-  <strong>✅ Dépôt envoyé avec succès !</strong>
+  <strong>Depot envoye avec succes !</strong>
   <div class="conf-box">
-    <span class="conf-label">Ton numéro de confirmation</span>
+    <span class="conf-label">Ton numero de confirmation</span>
     <span class="conf-num" id="successNum"></span>
   </div>
   <br>
-  <span style="font-size:0.82rem;opacity:0.8;">📧 Courriel envoyé à <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="9bd8e9fef6fefeeff8f2fedbfdf4e9f6faeff2f4f5f7faf5fcfeedf2f5b5f8f4f6">[email&#160;protected]</a><br>Conserve ce numéro pour tes dossiers.</span>
+  <span style="font-size:0.82rem;opacity:0.8;">Courriel envoye a cremeetcie [at] formationlangevin.com<br>Conserve ce numero pour tes dossiers.</span>
 </div>
-
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
-  // ── EmailJS init ──────────────────────────────────────────────────────
+<script>
   emailjs.init({ publicKey: 'WR1opVRrDGJ2lQxn-' });
 
-  // ── Helpers ───────────────────────────────────────────────────────────
   function pad(n, w) { return String(n).padStart(w, '0'); }
 
   function generateConfirmNum(dateStr) {
-    const d = dateStr ? new Date(dateStr + 'T00:00:00') : new Date();
-    const y = d.getFullYear();
-    const m = pad(d.getMonth() + 1, 2);
-    const day = pad(d.getDate(), 2);
-    const key = 'depotSeq_' + y + m + day;
-    const saved = sessionStorage.getItem(key);
-    const seq = saved ? parseInt(saved) + 1 : 1;
+    var d = dateStr ? new Date(dateStr + 'T00:00:00') : new Date();
+    var y = d.getFullYear();
+    var m = pad(d.getMonth() + 1, 2);
+    var day = pad(d.getDate(), 2);
+    var key = 'depotSeq_' + y + m + day;
+    var saved = sessionStorage.getItem(key);
+    var seq = saved ? parseInt(saved) + 1 : 1;
     sessionStorage.setItem(key, seq);
     return 'DEP' + y + m + day + '-' + pad(seq, 3);
   }
 
-  // ── Date + jour auto ──────────────────────────────────────────────────
-  const jours = ['Dimanche','Lundi','Mardi','Mercredi','Jeudi','Vendredi','Samedi'];
-  const todayStr = new Date().toISOString().split('T')[0];
+  var jours = ['Dimanche','Lundi','Mardi','Mercredi','Jeudi','Vendredi','Samedi'];
+  var todayStr = new Date().toISOString().split('T')[0];
   document.getElementById('date').value = todayStr;
 
   function setJour(dateStr) {
@@ -292,17 +222,15 @@
   setJour(todayStr);
   document.getElementById('date').addEventListener('change', function() { setJour(this.value); });
 
-  // ── Calcul total argent ───────────────────────────────────────────────
   function calcTotals() {
-    const argent = parseFloat(document.getElementById('argent-du').value) || 0;
-    const tip    = parseFloat(document.getElementById('tip-debit').value) || 0;
+    var argent = parseFloat(document.getElementById('argent-du').value) || 0;
+    var tip = parseFloat(document.getElementById('tip-debit').value) || 0;
     document.getElementById('total-argent').value = (argent - tip).toFixed(2);
   }
 
-  // ── Validation ────────────────────────────────────────────────────────
   function validateField(id) {
-    const el  = document.getElementById(id);
-    const err = document.getElementById('err-' + id);
+    var el = document.getElementById(id);
+    var err = document.getElementById('err-' + id);
     if (!el.value.trim()) {
       el.classList.add('invalid');
       if (err) err.style.display = 'block';
@@ -313,26 +241,22 @@
     return true;
   }
 
-  // ── Submit ────────────────────────────────────────────────────────────
   document.getElementById('depotForm').addEventListener('submit', function(e) {
     e.preventDefault();
-
-    const valid = ['employe','jour','date','quart-de','quart-a']
-      .map(validateField).every(Boolean);
-
+    var valid = ['employe','jour','date','quart-de','quart-a'].map(validateField).every(Boolean);
     if (!valid) {
       document.querySelector('.invalid').scrollIntoView({ behavior: 'smooth', block: 'center' });
       return;
     }
-
-    const v = id => document.getElementById(id).value || '—';
-    const confNum = generateConfirmNum(v('date'));
-
-    const btn = document.getElementById('btnSubmit');
+    function v(id) { return document.getElementById(id).value || '-'; }
+    var confNum = generateConfirmNum(v('date'));
+    var btn = document.getElementById('btnSubmit');
     btn.disabled = true;
-    btn.textContent = '⏳ Envoi en cours...';
+    btn.textContent = 'Envoi en cours...';
 
-    const params = {
+    var dest = ['Cremeetcie', 'formationlangevin.com'].join('@');
+
+    var params = {
       confirmation:  confNum,
       employe:       v('employe'),
       jour:          v('jour'),
@@ -352,10 +276,24 @@
       explications:  v('explications'),
       pourboires:    v('pourboires'),
       conso:         v('conso'),
-      to_email:      'Cremeetcie@formationlangevin.com'
+      to_email:      dest
     };
 
     emailjs.send('service_0dmie2i', 'template_d32rmw7', params)
       .then(function() {
         document.getElementById('successNum').textContent = confNum;
-        const banner = document.ge
+        var banner = document.getElementById('successBanner');
+        banner.style.display = 'block';
+        banner.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        btn.textContent = 'Envoye !';
+        btn.style.background = '#2e7d52';
+      })
+      .catch(function(err) {
+        btn.disabled = false;
+        btn.textContent = 'Envoyer le depot par courriel';
+        alert('Erreur: ' + JSON.stringify(err));
+      });
+  });
+</script>
+</body>
+</html>
