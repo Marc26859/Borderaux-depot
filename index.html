@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bordereau de Dépôt — Crème et Cie</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+<style>
+  :root {
+    --cream: #faf6f0;
+    --dark: #1a1410;
+    --brown: #6b4c35;
+    --gold: #c9a84c;
+    --soft: #ede6da;
+    --border: #c5b49a;
+    --red: #c0392b;
+    --green: #2e7d52;
+    --shadow: 0 4px 24px rgba(107,76,53,0.10);
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--cream);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 40px 16px 60px;
+    color: var(--dark);
+  }
+  .page-header { text-align: center; margin-bottom: 32px; animation: fadeDown 0.6s ease both; }
+  .page-header .logo-name { font-family: 'Playfair Display', serif; font-size: 2rem; color: var(--brown); letter-spacing: 0.04em; }
+  .page-header .tagline { font-size: 0.82rem; color: var(--gold); letter-spacing: 0.18em; text-transform: uppercase; margin-top: 4px; }
+  .card {
+    background: #fff; border-radius: 18px; box-shadow: var(--shadow);
+    width: 100%; max-width: 620px; padding: 36px 36px 28px;
+    animation: fadeUp 0.6s ease both 0.1s; border: 1.5px solid var(--soft);
+  }
+  .card-title {
+    font-family: 'Playfair Display', serif; font-size: 1.35rem; color: var(--brown);
+    text-align: center; margin-bottom: 28px; padding-bottom: 16px; border-bottom: 1.5px solid var(--soft);
+  }
+  .row { display: flex; gap: 14px; margin-bottom: 16px; }
+  .field { flex: 1; display: flex; flex-direction: column; gap: 5px; }
+  .field.full { flex: none; width: 100%; }
+  label { font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.12em; color: var(--brown); font-weight: 500; }
+  input[type="text"], input[type="date"], input[type="time"], input[type="number"], textarea {
+    border: 1.5px solid var(--border); border-radius: 8px; padding: 9px 12px;
+    font-family: 'DM Sans', sans-serif; font-size: 0.95rem; color: var(--dark);
+    background: var(--cream); outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s; width: 100%;
+  }
+  input:focus, textarea:focus { border-color: var(--gold); box-shadow: 0 0 0 3px rgba(201,168,76,0.13); background: #fff; }
+  textarea { resize: vertical; min-height: 68px; }
+  .section-title {
+    font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.14em;
+    color: var(--brown); font-weight: 500; margin-bottom: 8px; margin-top: 20px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .section-title::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+  .depot-table { width: 100%; border-collapse: collapse; margin-bottom: 6px; font-size: 0.9rem; }
+  .depot-table th {
+    background: var(--soft); padding: 9px 12px; font-weight: 500;
+    font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.10em;
+    color: var(--brown); border: 1.5px solid var(--border); text-align: center;
+  }
+  .depot-table td { border: 1.5px solid var(--border); padding: 7px 10px; vertical-align: middle; }
+  .depot-table .row-label { background: var(--cream); font-weight: 500; color: var(--dark); white-space: nowrap; font-size: 0.88rem; }
+  .depot-table input[type="number"] { border: none; background: transparent; padding: 4px 6px; font-size: 0.95rem; text-align: right; border-radius: 4px; width: 100%; }
+  .depot-table input[type="number"]:focus { background: #fff; box-shadow: 0 0 0 2px rgba(201,168,76,0.18); border: none; }
+  .total-row td { background: var(--soft); font-weight: 600; }
+  .hint { font-size: 0.75rem; color: #888; font-style: italic; padding: 4px 8px; }
+  .net3-row { display: flex; align-items: center; gap: 10px; margin-bottom: 16px; }
+  .net3-row label { font-family: 'Playfair Display', serif; font-size: 1rem; text-transform: none; letter-spacing: 0; color: var(--dark); font-weight: 500; white-space: nowrap; }
+  .net3-row input { flex: 1; }
+  .caisse-reminder {
+    background: #fff8ed; border: 1.5px solid var(--gold); border-radius: 10px;
+    padding: 11px 16px; font-size: 0.88rem; color: var(--brown);
+    margin-top: 18px; margin-bottom: 8px; display: flex; align-items: center; gap: 10px;
+  }
+  .submit-area { margin-top: 28px; display: flex; flex-direction: column; gap: 10px; align-items: center; }
+  .btn-submit {
+    background: var(--brown); color: #fff; border: none; border-radius: 50px;
+    padding: 14px 48px; font-family: 'DM Sans', sans-serif; font-size: 1rem;
+    font-weight: 500; letter-spacing: 0.06em; cursor: pointer;
+    transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
+    box-shadow: 0 4px 16px rgba(107,76,53,0.18);
+  }
+  .btn-submit:hover:not(:disabled) { background: var(--gold); color: var(--dark); transform: translateY(-1px); }
+  .btn-submit:disabled { opacity: 0.7; cursor: not-allowed; }
+  .success-banner {
+    display: none; background: #edf7f1; border: 1.5px solid var(--green);
+    color: var(--green); border-radius: 12px; padding: 24px; text-align: center;
+    margin-top: 20px; width: 100%; max-width: 620px; animation: fadeUp 0.4s ease both;
+  }
+  .success-banner strong { display: block; font-size: 1.1rem; margin-bottom: 10px; font-family: 'Playfair Display', serif; }
+  .conf-box { background: #fff; border-radius: 8px; padding: 12px 20px; display: inline-block; border: 1.5px solid var(--green); margin-bottom: 10px; }
+  .conf-label { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.12em; color: var(--green); font-weight: 500; display: block; }
+  .conf-num { font-family: 'Playfair Display', serif; font-size: 1.4rem; color: var(--dark); letter-spacing: 0.08em; }
+  .field-error { font-size: 0.74rem; color: var(--red); margin-top: 2px; display: none; }
+  input.invalid, textarea.invalid { border-color: var(--red) !important; }
+  @keyframes fadeUp { from { opacity:0; transform:translateY(18px); } to { opacity:1; transform:translateY(0); } }
+  @keyframes fadeDown { from { opacity:0; transform:translateY(-14px); } to { opacity:1; transform:translateY(0); } }
+  @media (max-width: 520px) { .card { padding: 22px 14px 20px; } .row { flex-direction: column; gap: 10px; } }
+</style>
+</head>
+<body>
+
+<div class="page-header">
+  <div class="logo-name">Crème &amp; Cie</div>
+  <div class="tagline">Bordereau de Dépôt</div>
+</div>
+
+<div class="card">
+  <div class="card-title">Bordereau de Dépôt</div>
+
+  <form id="depotForm" novalidate>
+
+    <div class="row">
+      <div class="field full">
+        <label for="employe">Employé</label>
+        <input type="text" id="employe" placeholder="Nom de l'employé" required>
+        <span class="field-error" id="err-employe">Ce champ est requis.</span>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="field">
+        <label for="jour">Jour de la semaine</label>
+        <input type="text" id="jour" placeholder="ex. Lundi" required>
+        <span class="field-error" id="err-jour">Ce champ est requis.</span>
+      </div>
+      <div class="field">
+        <label for="date">Date</label>
+        <input type="date" id="date" required>
+        <span class="field-error" id="err-date">Ce champ est requis.</span>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="field">
+        <label for="quart-de">Quart de travail — De</label>
+        <input type="time" id="quart-de" required>
+        <span class="field-error" id="err-quart-de">Ce champ est requis.</span>
+      </div>
+      <div class="field">
+        <label for="quart-a">À</label>
+        <input type="time" id="quart-a" required>
+        <span class="field-error" id="err-quart-a">Ce champ est requis.</span>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="field">
+        <label for="caisse-depart">Caisse de départ ($)</label>
+        <input type="number" id="caisse-depart" placeholder="135.00" step="0.01" min="0">
+      </div>
+      <div class="field">
+        <label for="no-caisse">No de caisse</label>
+        <input type="text" id="no-caisse" placeholder="ex. 01">
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="field full">
+        <label for="meteo">Météo / 1er ou dernier client / Particularités</label>
+        <input type="text" id="meteo" placeholder="ex. Neige, premier client 9h15...">
+      </div>
+    </div>
+
+    <div class="net3-row">
+      <label for="net3">NET 3 :</label>
+      <input type="number" id="net3" placeholder="0.00" step="0.01" min="0">
+    </div>
+
+    <div class="section-title">Argent</div>
+    <table class="depot-table">
+      <thead>
+        <tr>
+          <th style="width:38%"></th>
+          <th>Montant dû<br><small style="font-weight:400;text-transform:none;">(relevé de caisse)</small></th>
+          <th>Montant réel déposé</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="row-label"><strong>ARGENT</strong></td>
+          <td><input type="number" id="argent-du" placeholder="0.00" step="0.01" min="0" oninput="calcTotals()"></td>
+          <td><input type="number" id="argent-reel" placeholder="0.00" step="0.01" min="0"></td>
+        </tr>
+        <tr>
+          <td class="row-label">Moins tip débit</td>
+          <td><input type="number" id="tip-debit" placeholder="0.00" step="0.01" min="0" oninput="calcTotals()"></td>
+          <td class="hint">* Les chiffres dans ces 2 cases doivent être identiques (ou presque)</td>
+        </tr>
+        <tr class="total-row">
+          <td class="row-label">Total</td>
+          <td><input type="number" id="total-argent" placeholder="0.00" step="0.01" readonly tabindex="-1" style="font-weight:600;color:var(--brown)"></td>
+          <td></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="section-title">Débit</div>
+    <table class="depot-table">
+      <thead>
+        <tr>
+          <th style="width:38%"></th>
+          <th>Montant dû</th>
+          <th>Montant réel déposé</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="row-label"><strong>DÉBIT</strong><br><small style="font-weight:400;font-size:0.78rem;color:#888">(AVANT tip)</small></td>
+          <td><input type="number" id="debit-du" placeholder="0.00" step="0.01" min="0"></td>
+          <td>
+            <input type="number" id="debit-reel" placeholder="0.00" step="0.01" min="0">
+            <div class="hint">Additionner les papiers débit AVANT tip — les chiffres doivent être identiques</div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="bottom-section">
+      <div class="section-title">Explications</div>
+      <textarea id="explications" placeholder="Toute note ou explication utile..."></textarea>
+    </div>
+
+    <div class="caisse-reminder">
+      <span style="font-size:1.2rem">💡</span>
+      <span>Toujours laisser la caisse à <strong>135 $</strong> à la fin de votre quart de travail.</span>
+    </div>
+
+    <div class="row" style="margin-top:14px;">
+      <div class="field">
+        <label for="pourboires">Total de tes pourboires ($)</label>
+        <input type="number" id="pourboires" placeholder="0.00" step="0.01" min="0">
+      </div>
+      <div class="field">
+        <label for="conso">Consommation employé</label>
+        <input type="text" id="conso" placeholder="(avec facture si requise)">
+      </div>
+    </div>
+
+    <div class="submit-area">
+      <button type="submit" class="btn-submit" id="btnSubmit">📨 Envoyer le dépôt par courriel</button>
+    </div>
+
+  </form>
+</div>
+
+<div class="success-banner" id="successBanner">
+  <strong>✅ Dépôt envoyé avec succès !</strong>
+  <div class="conf-box">
+    <span class="conf-label">Ton numéro de confirmation</span>
+    <span class="conf-num" id="successNum"></span>
+  </div>
+  <br>
+  <span style="font-size:0.82rem;opacity:0.8;">📧 Courriel envoyé à <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="aeeddccbc3cbcbdacdc7cbeec8c1dcc3cfdac7c1c0c2cfc0c9cbd8c7c080cdc1c3">[email&#160;protected]</a><br>Conserve ce numéro pour tes dossiers.</span>
+</div>
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+  // ── EmailJS init ──────────────────────────────────────────────────────
+  emailjs.init('WR1opVRrDGJ2lQxn-');
+
+  // ── Helpers ───────────────────────────────────────────────────────────
+  function pad(n, w) { return String(n).padStart(w, '0'); }
+
+  function generateConfirmNum(dateStr) {
+    const d = dateStr ? new Date(dateStr + 'T00:00:00') : new Date();
+    const y = d.getFullYear();
+    const m = pad(d.getMonth() + 1, 2);
+    const day = pad(d.getDate(), 2);
+    const key = 'depotSeq_' + y + m + day;
+    const saved = sessionStorage.getItem(key);
+    const seq = saved ? parseInt(saved) + 1 : 1;
+    sessionStorage.setItem(key, seq);
+    return 'DEP' + y + m + day + '-' + pad(seq, 3);
+  }
+
+  // ── Date + jour auto ──────────────────────────────────────────────────
+  const jours = ['Dimanche','Lundi','Mardi','Mercredi','Jeudi','Vendredi','Samedi'];
+  const todayStr = new Date().toISOString().split('T')[0];
+  document.getElementById('date').value = todayStr;
+
+  function setJour(dateStr) {
+    if (!dateStr) return;
+    document.getElementById('jour').value = jours[new Date(dateStr + 'T00:00:00').getDay()];
+  }
+  setJour(todayStr);
+  document.getElementById('date').addEventListener('change', function() { setJour(this.value); });
+
+  // ── Calcul total argent ───────────────────────────────────────────────
+  function calcTotals() {
+    const argent = parseFloat(document.getElementById('argent-du').value) || 0;
+    const tip    = parseFloat(document.getElementById('tip-debit').value) || 0;
+    document.getElementById('total-argent').value = (argent - tip).toFixed(2);
+  }
+
+  // ── Validation ────────────────────────────────────────────────────────
+  function validateField(id) {
+    const el  = document.getElementById(id);
+    const err = document.getElementById('err-' + id);
+    if (!el.value.trim()) {
+      el.classList.add('invalid');
+      if (err) err.style.display = 'block';
+      return false;
+    }
+    el.classList.remove('invalid');
+    if (err) err.style.display = 'none';
+    return true;
+  }
+
+  // ── Submit ────────────────────────────────────────────────────────────
+  document.getElementById('depotForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+
+    const valid = ['employe','jour','date','quart-de','quart-a']
+      .map(validateField).every(Boolean);
+
+    if (!valid) {
+      document.querySelector('.invalid').scrollIntoView({ behavior: 'smooth', block: 'center' });
+      return;
+    }
+
+    const v = id => document.getElementById(id).value || '—';
+    const confNum = generateConfirmNum(v('date'));
+
+    const btn = document.getElementById('btnSubmit');
+    btn.disabled = true;
+    btn.textContent = '⏳ Envoi en cours...';
+
+    const params = {
+      confirmation:  confNum,
+      employe:       v('employe'),
+      jour:          v('jour'),
+      date:          v('date'),
+      quart_de:      v('quart-de'),
+      quart_a:       v('quart-a'),
+      caisse_depart: v('caisse-depart'),
+      no_caisse:     v('no-caisse'),
+      meteo:         v('meteo'),
+      net3:          v('net3'),
+      argent_du:     v('argent-du'),
+      tip_debit:     v('tip-debit'),
+      total_argent:  v('total-argent'),
+      argent_reel:   v('argent-reel'),
+      debit_du:      v('debit-du'),
+      debit_reel:    v('debit-reel'),
+      explications:  v('explications'),
+      pourboires:    v('pourboires'),
+      conso:         v('conso'),
+      to_email:      'Cremeetcie@formationlangevin.com'
+    };
+
+    emailjs.send('service_0dmie2i', 'template_d32rmw7', params)
+      .then(function() {
+        document.getElementById('successNum').textContent = confNum;
+        const banner = document.getElementById('successBanner');
+        banner.style.display = 'block';
+        banner.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        btn.textContent = '✅ Envoyé !';
+        btn.style.background = '#2e7d52';
+      })
+      
