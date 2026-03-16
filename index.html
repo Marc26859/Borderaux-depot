@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Bordereau de Depot - Creme et Cie</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+
 <style>
   :root {
     --cream: #faf6f0; --dark: #1a1410; --brown: #6b4c35; --gold: #c9a84c;
@@ -195,7 +195,7 @@
   <span style="font-size:0.82rem;opacity:0.8;">Courriel envoye a cremeetcie [at] formationlangevin.com<br>Conserve ce numero pour tes dossiers.</span>
 </div>
 <script>
-  emailjs.init({ publicKey: 'WR1opVRrDGJ2lQxn-' });
+  var GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwHdPQJFZnaqwDTusENE6KXkooRe_YeRsUMmL4h1GzB1-37VDxwBkG68N63KPOokEAX/exec';
 
   function pad(n, w) { return String(n).padStart(w, '0'); }
 
@@ -248,51 +248,65 @@
       document.querySelector('.invalid').scrollIntoView({ behavior: 'smooth', block: 'center' });
       return;
     }
+
     function v(id) { return document.getElementById(id).value || '-'; }
     var confNum = generateConfirmNum(v('date'));
     var btn = document.getElementById('btnSubmit');
     btn.disabled = true;
     btn.textContent = 'Envoi en cours...';
 
-    var dest = ['Cremeetcie', 'formationlangevin.com'].join('@');
+    var subject = 'Bordereau de Depot - ' + v('employe') + ' - ' + v('date');
+    var body =
+'BORDEREAU DE DEPOT — Creme & Cie\n' +
+'========================================\n\n' +
+'No de confirmation : ' + confNum + '\n\n' +
+'INFORMATIONS GENERALES\n' +
+'----------------------\n' +
+'Employe       : ' + v('employe') + '\n' +
+'Jour          : ' + v('jour') + '\n' +
+'Date          : ' + v('date') + '\n' +
+'Quart         : ' + v('quart-de') + ' a ' + v('quart-a') + '\n' +
+'Caisse depart : ' + v('caisse-depart') + ' $\n' +
+'No caisse     : ' + v('no-caisse') + '\n' +
+'Meteo / Notes : ' + v('meteo') + '\n' +
+'NET 3         : ' + v('net3') + ' $\n\n' +
+'ARGENT\n' +
+'------\n' +
+'Argent du (releve)   : ' + v('argent-du') + ' $\n' +
+'Moins tip debit      : ' + v('tip-debit') + ' $\n' +
+'Total argent         : ' + v('total-argent') + ' $\n' +
+'Montant reel depose  : ' + v('argent-reel') + ' $\n\n' +
+'DEBIT\n' +
+'-----\n' +
+'Debit du (avant tip) : ' + v('debit-du') + ' $\n' +
+'Montant reel depose  : ' + v('debit-reel') + ' $\n\n' +
+'AUTRES\n' +
+'------\n' +
+'Explications  : ' + v('explications') + '\n' +
+'Pourboires    : ' + v('pourboires') + ' $\n' +
+'Consommation  : ' + v('conso') + '\n\n' +
+'========================================\n' +
+'Envoye depuis l\'application Bar Laitier';
 
-    var params = {
-      confirmation:  confNum,
-      employe:       v('employe'),
-      jour:          v('jour'),
-      date:          v('date'),
-      quart_de:      v('quart-de'),
-      quart_a:       v('quart-a'),
-      caisse_depart: v('caisse-depart'),
-      no_caisse:     v('no-caisse'),
-      meteo:         v('meteo'),
-      net3:          v('net3'),
-      argent_du:     v('argent-du'),
-      tip_debit:     v('tip-debit'),
-      total_argent:  v('total-argent'),
-      argent_reel:   v('argent-reel'),
-      debit_du:      v('debit-du'),
-      debit_reel:    v('debit-reel'),
-      explications:  v('explications'),
-      pourboires:    v('pourboires'),
-      conso:         v('conso'),
-      to_email:      dest
-    };
-
-    emailjs.send('service_0dmie2i', 'template_d32rmw7', params)
-      .then(function() {
-        document.getElementById('successNum').textContent = confNum;
-        var banner = document.getElementById('successBanner');
-        banner.style.display = 'block';
-        banner.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        btn.textContent = 'Envoye !';
-        btn.style.background = '#2e7d52';
-      })
-      .catch(function(err) {
-        btn.disabled = false;
-        btn.textContent = 'Envoyer le depot par courriel';
-        alert('Erreur: ' + JSON.stringify(err));
-      });
+    fetch(GOOGLE_SCRIPT_URL, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ subject: subject, body: body })
+    })
+    .then(function() {
+      document.getElementById('successNum').textContent = confNum;
+      var banner = document.getElementById('successBanner');
+      banner.style.display = 'block';
+      banner.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      btn.textContent = 'Envoye !';
+      btn.style.background = '#2e7d52';
+    })
+    .catch(function(err) {
+      btn.disabled = false;
+      btn.textContent = 'Envoyer le depot par courriel';
+      alert('Erreur lors de l\'envoi. Veuillez reessayer.');
+    });
   });
 </script>
 </body>
